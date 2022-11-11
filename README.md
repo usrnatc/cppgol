@@ -17,5 +17,7 @@ The Windows binary should run alongside the libSDL2_gfx.dll
 
 # Controls
 
-- `<p>` : pause cells
-- `<c>` : clear screen
+- `<LeftMouseClick>`  : place alive cell
+- `<RightMouseClick>` : kill allive cell
+- `<p>`               : pause cells
+- `<c>`               : clear screen
