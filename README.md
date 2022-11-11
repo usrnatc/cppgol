@@ -6,6 +6,10 @@ SDL2 library.
 See [Releases](https://github.com/usrnatc/cppgol/releases) for Windows build 
 and Linux build.
 
+Not too sure how stable the linux build is but I managed to get it to run on:
+- Debian testing
+- Archlinux
+
 # Prequisites for Linux
 - SDL2
 - SDL2_ttf
