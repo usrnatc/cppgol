@@ -35,7 +35,7 @@ Game::init(int unsigned window_width, int unsigned window_height)
 
     if (rc = SDL_Init(SDL_INIT_EVERYTHING), rc) {
 
-        cerr << "[ERROR] :: holy fuck everything died" << endl;
+        cerr << "[ERROR] :: SDL_Init" << endl;
         goto out;
     }
 
