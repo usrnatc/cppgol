@@ -68,6 +68,19 @@ calculate_circular_index(int a)
     return (mod < 0) ? (mod + G_BOARD_SIZE) : (mod);
 }
 
+int
+framerate_bounds_check(int frame_delim, int delta)
+{
+    frame_delim += delta;
+
+    if (frame_delim > 1000)
+        frame_delim = 1000;
+    if (frame_delim < 1)
+        frame_delim = 1;
+
+    return (frame_delim);
+}
+
 void
 Game::set_cell(int x, int y, uint8_t val)
 {
@@ -188,6 +201,7 @@ Game::loop(void)
     SDL_Event event;
     int unsigned previous_tick = 0;
     int unsigned current_tick;
+    int frame_delim = 5;
 
     while (this->g_state == GAME_RUNNING) {
         
@@ -197,7 +211,7 @@ Game::loop(void)
 
         if (!this->g_paused) {
 
-            if ((current_tick - previous_tick) > 1000 / 5.0) {
+            if ((current_tick - previous_tick) > 1000 / frame_delim) {
             
                 this->next_iteration();
                 previous_tick = current_tick;
@@ -220,7 +234,14 @@ Game::loop(void)
                             break;
                         case SDLK_c:
                             this->clear_board();
+                            break;
                     }
+                case SDL_MOUSEWHEEL:
+                    if (event.wheel.y > 0)
+                        frame_delim = framerate_bounds_check(frame_delim, 1);
+                    else if (event.wheel.y < 0)
+                        frame_delim = framerate_bounds_check(frame_delim, -1);
+                    break;
             }
         }
         this->g_renderer->present();
