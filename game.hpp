@@ -54,7 +54,7 @@ class Game
         void display_board(void);
         void next_iteration(void);
         void clear_board(void);
-        void next_brush(void);
+        void next_brush(int);
 
         void place_cell(int, int, int);
         void place_block(int, int, int);

@@ -162,7 +162,10 @@ Game::handle_keyboard(SDL_Event *event, int *frame_delim)
                         this->clear_board();
                         break;
                     case SDLK_RIGHT:
-                        this->next_brush();
+                        this->next_brush(1);
+                        break;
+                    case SDLK_LEFT:
+                        this->next_brush(-1);
                         break;
                 }
                 break;
@@ -261,10 +264,14 @@ Game::loop(void)
 }
 
 void
-Game::next_brush(void)
+Game::next_brush(int delta)
 {
-    if (++this->g_brush >= this->g_brush_selections.size())
+    int size = this->g_brush_selections.size();
+    this->g_brush += delta;
+    if (this->g_brush >= size)
         this->g_brush = 0;
+    if (this->g_brush < 0)
+        this->g_brush = size - 1;
 }
 
 void
