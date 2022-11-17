@@ -1,3 +1,13 @@
+/**
+ * GAME:
+ *  This file contains all prototypes and utilities needed for the
+ *  game logic of Conway's Game of Life
+ *
+ *  file: game.hpp
+ *  author: Nathan Corcoran
+ *  year: 2022
+ */
+
 #pragma once
 
 #include <memory>

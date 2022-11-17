@@ -1,7 +1,14 @@
+/**
+ * GAME:
+ *  This file contains all game logic necessary for Conway's Game of Life
+ *
+ *  file: game.cpp
+ *  author: Nathan Corcoran
+ *  year: 2022
+ */
+
 #include <stdio.h>
 #include <utility>
-#include <thread>
-#include <mutex>
 
 #if defined(__gnu_linux__) || defined(__linux__)
     #include <SDL2/SDL.h>

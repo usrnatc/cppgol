@@ -1,3 +1,13 @@
+/**
+ * RENDERER:
+ *  This file contains all necessary prototypes and utilities needed for
+ *  Conway's Game of Life rendering functionalities
+ *
+ *  file: renderer.hpp
+ *  author: Nathan Corcoran
+ *  year: 2022
+ */
+
 #pragma once
 
 #include <memory>

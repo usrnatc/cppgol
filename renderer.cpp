@@ -1,3 +1,13 @@
+/**
+ * RENDERER:
+ *  This file contains all necessary functionality to render Conway's Game
+ *  of Life
+ *
+ *  file: renderer.cpp
+ *  author: Nathan Corcoran
+ *  year: 2022
+ */
+
 #include <memory>
 
 #if defined(__gnu_linux__) || defined(__linux__)

@@ -1,3 +1,13 @@
+/**
+ * WINDOW:
+ *  This file contains all necessary prototype and utilites needed for
+ *  an SDL window
+ *
+ *  file: window.hpp
+ *  author: Nathan Corcoran
+ *  year: 2022
+ */
+
 #pragma once
 
 #if defined(__gnu_linux__) || defined(__linux__)

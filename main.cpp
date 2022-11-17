@@ -1,4 +1,11 @@
-#include <iostream>
+/**
+ * CGOL:
+ *  This is a simple implementation of Conway's Game of Life
+ *
+ *  The program consists of a Window, a Renderer, and finally the Game logic
+ *  as per standard SDL2 programs
+ */
+
 #include <memory>
 
 #if defined(__gnu_linux__) || defined(__linux__)

@@ -1,3 +1,12 @@
+/**
+ * WINDOW:
+ *  This file contains all necessary functionality to create an SDL window
+ *
+ *  file: window.cpp
+ *  author: Nathan Corcoran
+ *  year: 2022
+ */
+
 #if defined(__gnu_linux__) || defined(__linux__)
     #include <SDL2/SDL.h>
 #endif
