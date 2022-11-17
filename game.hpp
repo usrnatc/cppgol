@@ -2,7 +2,14 @@
 
 #include <memory>
 #include <vector>
-#include <SDL.h>
+
+#if defined(__gnu__linux__) || defined(__linux__)
+    #include <SDL2/SDL.h>
+#endif
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+    #include <SDL.h>
+#endif
 
 #include "window.hpp"
 #include "renderer.hpp"

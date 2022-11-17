@@ -1,7 +1,14 @@
 #pragma once
 
 #include <memory>
-#include <SDL.h>
+
+#if defined(__gnu_linux__) || defined(__linux__)
+    #include <SDL2/SDL.h>
+#endif
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+    #include <SDL.h>
+#endif
 
 #include "window.hpp"
 
@@ -20,8 +27,6 @@ class Renderer
         int clear(void);
         void present(void);
 
-        int draw_filled_circle(int16_t, int16_t, int16_t, uint8_t, uint8_t,
-                uint8_t, uint8_t);
         int draw_selection_box(int16_t, int16_t, uint8_t, uint8_t, uint8_t,
                 uint8_t);
         int draw_filled_box(int16_t, int16_t, uint8_t, uint8_t, uint8_t,

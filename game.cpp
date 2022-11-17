@@ -1,9 +1,15 @@
-#include <iostream>
-#include <cmath>
+#include <stdio.h>
 #include <utility>
 #include <thread>
 #include <mutex>
-#include <SDL.h>
+
+#if defined(__gnu_linux__) || defined(__linux__)
+    #include <SDL2/SDL.h>
+#endif
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+    #include <SDL.h>
+#endif
 
 #include "game.hpp"
 #include "window.hpp"
@@ -34,7 +40,7 @@ Game::init(int unsigned window_width, int unsigned window_height)
 
     if (rc = SDL_Init(SDL_INIT_EVERYTHING), rc) {
 
-        std::cerr << "[ERROR] :: SDL_Init" << std::endl;
+        fprintf(stderr, "[ERROR] :: %s :: SDL_Init\n", __func__);
         goto out;
     }
 
@@ -43,7 +49,7 @@ Game::init(int unsigned window_width, int unsigned window_height)
             window_height, SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
     if (!this->g_window->self()) {
 
-        std::cerr << "[ERROR] :: g_window" << std::endl;
+        fprintf(stderr, "[ERROR :: %s :: g_window\n", __func__);
         rc = EXIT_FAILURE;
         goto out;
     }
@@ -52,7 +58,7 @@ Game::init(int unsigned window_width, int unsigned window_height)
             SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!this->g_renderer->self()) {
 
-        std::cerr << "[ERROR] :: g_renderer" << std::endl;
+        fprintf(stderr, "[ERROR] :: %s :: g_renderer\n", __func__);
         rc = EXIT_FAILURE;
     }
 

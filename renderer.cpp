@@ -1,16 +1,20 @@
-#include <iostream>
 #include <memory>
-#include <cmath>
-#include <SDL.h>
-#include <SDL2_gfxPrimitives.h>
+
+#if defined(__gnu_linux__) || defined(__linux__)
+    #include <SDL2/SDL.h>
+    #include <SDL2/SDL2_gfxPrimitives.h>
+#endif
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+    #include <SDL.h>
+    #include <SDL2_gfxPrimitives.h>
+#endif
 
 #include "window.hpp"
 #include "renderer.hpp"
 
-using namespace std;
-
 void
-Renderer::init(shared_ptr<Window> window, int renderer_index,
+Renderer::init(std::shared_ptr<Window> window, int renderer_index,
         uint32_t renderer_flags)
 {
     this->renderer = SDL_CreateRenderer(window->self(), renderer_index,
@@ -40,7 +44,9 @@ Renderer::clear(void)
     if (rc) {
 
         /* if we cant determine previous draw colour, forget about it */
-        cerr << "[ERROR] :: could not get renderer draw colour" << endl;
+        fprintf(stderr,
+                "[INFO] :: %s :: could not determine previous draw colour\n",
+                __func__);
         *r = 0;
         *g = 0;
         *b = 0;
@@ -56,16 +62,6 @@ Renderer::clear(void)
     delete b;
     delete a;
 
-    return (rc);
-}
-
-int
-Renderer::draw_filled_circle(int16_t x, int16_t y, int16_t rad, uint8_t r,
-        uint8_t g, uint8_t b, uint8_t a)
-{
-    int rc;
-
-    rc = filledCircleRGBA(this->renderer, x, y, rad, r, g, b, a);
     return (rc);
 }
 
