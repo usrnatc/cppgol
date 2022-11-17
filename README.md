@@ -1,4 +1,4 @@
-### Conway's Game of Life
+# Conway's Game of Life
 
 This is a simple implementation of Conway's Game of Life in C++ using the
 SDL2 library.
@@ -6,9 +6,9 @@ SDL2 library.
 See [Releases](https://github.com/usrnatc/cppgol/releases) for Windows build 
 and Linux build.
 
-### Installation
+# Installation
 ## Linux
-# Debian-based:
+### Debian-based:
 ```bash
 sudo apt install libsdl2 libsdl2-ttf libsdl2-gfx
 ```
@@ -24,7 +24,7 @@ antivirus software as this is not a signed binary
 
 ![image](https://user-images.githubusercontent.com/79397859/201312754-c0762500-bdc4-4073-8c1d-90e7a1bfc323.png)
 
-# Controls
+## Controls
 
 - p                     : Pause simulation
 - c                     : Clear current board
