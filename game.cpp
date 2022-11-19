@@ -261,7 +261,6 @@ Game::loop(void)
         
         current_tick = SDL_GetTicks();
         this->g_renderer->clear();
-        this->handle_mouse();
         this->handle_keyboard(&event, &frame_delim);
 
         if (!this->g_paused) {
@@ -273,6 +272,7 @@ Game::loop(void)
             }
         }
         this->display_board();
+        this->handle_mouse();
         this->g_renderer->present();
     }
 }
