@@ -135,12 +135,13 @@ Game::handle_mouse(void)
 {
     int         m_x;
     int         m_y;
-    int         b_x;
-    int         b_y;
     uint32_t    m_btns;
 
     m_btns = SDL_GetMouseState(&m_x, &m_y);
     if (m_x && m_y) {
+
+        int b_x;
+        int b_y;
 
         /* round value to nearest multiple of 10 */
         b_x = m_x / 10;
