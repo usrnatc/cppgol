@@ -24,19 +24,18 @@
 #include "window.hpp"
 #include "renderer.hpp"
 
-using namespace std;
-
 int
 main(int argv, char **args)
 {
-    unique_ptr<Game> game = make_unique<Game>();
+    std::unique_ptr<Game> game = std::make_unique<Game>();
     int rc = EXIT_SUCCESS;
 
     rc = game->init(800, 800);
     if (rc)
-        return (rc);
+        goto out;
 
     game->loop();
 
+out:
     return (rc);
 }
