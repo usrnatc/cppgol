@@ -73,8 +73,8 @@ class Game
         void handle_mouse(void);
         void handle_keyboard(SDL_Event *, int *);
         void set_cell(int, int, uint8_t);
-        uint8_t get_cell(int, int) const;
-        int calculate_neighbour_count(int, int) const;
+        [[nodiscard]] uint8_t get_cell(int, int) const;
+        [[nodiscard]] int calculate_neighbour_count(int, int) const;
         void display_board(void);
         void next_iteration(void);
         void clear_board(void);

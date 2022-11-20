@@ -27,10 +27,10 @@ class Renderer
     private:
         SDL_Renderer *renderer;
     public:
-        Renderer(SDL_Renderer *r) { this->renderer = r; }
+        explicit Renderer(SDL_Renderer *r) { this->renderer = r; }
         ~Renderer(void) { SDL_DestroyRenderer(this->renderer); }
 
-        void init(std::shared_ptr<Window> window, int, uint32_t);
+        void init(const std::shared_ptr<Window>& window, int, uint32_t);
         SDL_Renderer *self(void) { return this->renderer; }
 
         int set_draw_colour(uint8_t, uint8_t, uint8_t, uint8_t);

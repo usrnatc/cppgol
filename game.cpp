@@ -8,7 +8,6 @@
  */
 
 #include <stdio.h>
-#include <utility>
 #include <cstdint>
 
 #if defined(__gnu_linux__) || defined(__linux__)
@@ -145,7 +144,7 @@ Game::handle_mouse(void)
         int b_x;
         int b_y;
 
-        /* round value to nearest multiple of 10 */
+        /* round value to the nearest multiple of 10 */
         b_x = m_x / 10;
         b_y = m_y / 10;
 

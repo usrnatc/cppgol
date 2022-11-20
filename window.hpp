@@ -24,7 +24,7 @@ class Window
         SDL_Window *window;
 
     public:
-        Window(SDL_Window *w) { this->window = w; }
+        explicit Window(SDL_Window *w) { this->window = w; }
         ~Window(void) { SDL_DestroyWindow(this->window); }
 
         void init(char const*, int, int, int, int, uint32_t);

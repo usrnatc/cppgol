@@ -24,7 +24,7 @@
 #include "renderer.hpp"
 
 void
-Renderer::init(std::shared_ptr<Window> window, int renderer_index,
+Renderer::init(const std::shared_ptr<Window>& window, int renderer_index,
         uint32_t renderer_flags)
 {
     this->renderer = SDL_CreateRenderer(window->self(), renderer_index,
@@ -44,10 +44,10 @@ int
 Renderer::clear(void)
 {
     int rc;
-    uint8_t *r = new uint8_t,
-            *g = new uint8_t,
-            *b = new uint8_t,
-            *a = new uint8_t;
+    auto *r = new uint8_t,
+         *g = new uint8_t,
+         *b = new uint8_t,
+         *a = new uint8_t;
 
     /* store previous draw colour for 'context-switching' */
     rc = SDL_GetRenderDrawColor(this->renderer, r, g, b, a);

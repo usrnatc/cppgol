@@ -21,8 +21,6 @@
 #endif
 
 #include "game.hpp"
-#include "window.hpp"
-#include "renderer.hpp"
 
 int
 main(int argv, char **args)
