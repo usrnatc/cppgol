@@ -12,6 +12,7 @@
 
 #include <memory>
 #include <vector>
+#include <cstdint>
 
 #if defined(__gnu__linux__) || defined(__linux__)
     #include <SDL2/SDL.h>
@@ -29,7 +30,7 @@ class Game
     private:
         std::shared_ptr<Window> g_window;
         std::shared_ptr<Renderer> g_renderer;
-        uint8_t *g_board;
+        std::vector<uint8_t> g_board;
         int g_brush;
 
         enum State {

@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <utility>
+#include <cstdint>
 
 #if defined(__gnu_linux__) || defined(__linux__)
     #include <SDL2/SDL.h>
@@ -26,7 +27,7 @@ Game::Game(void)
 {
     this->g_window = std::make_shared<Window>(nullptr);
     this->g_renderer = std::make_shared<Renderer>(nullptr);
-    this->g_board = new uint8_t[G_BOARD_SIZE * G_BOARD_SIZE]();
+    this->g_board = std::vector<uint8_t>(G_BOARD_SIZE * G_BOARD_SIZE);
     this->g_state = G_RUNNING;
     this->g_brush = 0;
     this->g_paused = false;
@@ -36,7 +37,7 @@ Game::~Game()
 {
     this->g_renderer.reset();   /* destroys renderer? */
     this->g_window.reset();     /* destroys window? */
-    delete[] this->g_board;
+    this->g_board.clear();
     SDL_Quit();
 }
 
@@ -196,16 +197,18 @@ Game::handle_keyboard(SDL_Event *event, int *frame_delim)
 void
 Game::clear_board(void)
 {
-    uint8_t *empty_board = new uint8_t[G_BOARD_SIZE * G_BOARD_SIZE]();
+    std::vector<uint8_t>::iterator iter;
+    for (iter = this->g_board.begin(); iter != this->g_board.end(); iter++) {
 
-    std::swap(this->g_board, empty_board);
-    delete[] empty_board;
+        *iter = 0;
+    }
 }
 
 void
 Game::next_iteration(void)
 {
-    uint8_t *next_iteration = new uint8_t[G_BOARD_SIZE * G_BOARD_SIZE]();
+    std::vector<uint8_t> next_iteration =
+        std::vector<uint8_t>(G_BOARD_SIZE * G_BOARD_SIZE);
 
     for (int y = 0; y < G_BOARD_SIZE; y++) {
 
@@ -228,7 +231,6 @@ Game::next_iteration(void)
     }
 
     std::swap(this->g_board, next_iteration);
-    delete[] next_iteration;
 }
 
 void
