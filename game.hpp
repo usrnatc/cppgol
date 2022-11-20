@@ -33,11 +33,13 @@ class Game
         std::vector<uint8_t> g_board;
         std::vector<uint8_t> g_next_iteration;
         int g_brush;
+        bool g_paused;
 
         enum State {
             G_RUNNING,
             G_STOPPED,
         };
+        State g_state;
 
         std::vector<void (Game::*)(int, int)> const g_brush_selections = {
             &Game::select_cell,
@@ -64,6 +66,9 @@ class Game
             &Game::place_beacon,
             &Game::place_glider,
         };
+
+        std::shared_ptr<Window> window(void) { return this->g_window; }
+        std::shared_ptr<Renderer> renderer(void) { return this->g_renderer; }
 
         void handle_mouse(void);
         void handle_keyboard(SDL_Event *, int *);
@@ -102,13 +107,6 @@ class Game
         Game(void);
         ~Game(void);
 
-        State g_state;
-        bool g_paused;
-
-        std::shared_ptr<Window> window(void) { return this->g_window; }
-        std::shared_ptr<Renderer> renderer(void) { return this->g_renderer; }
-
         int init(int unsigned, int unsigned);
         void loop(void);
-
 };
