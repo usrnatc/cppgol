@@ -31,6 +31,7 @@ class Game
         std::shared_ptr<Window> g_window;
         std::shared_ptr<Renderer> g_renderer;
         std::vector<uint8_t> g_board;
+        std::vector<uint8_t> g_next_iteration;
         int g_brush;
 
         enum State {

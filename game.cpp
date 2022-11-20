@@ -28,6 +28,7 @@ Game::Game(void)
     this->g_window = std::make_shared<Window>(nullptr);
     this->g_renderer = std::make_shared<Renderer>(nullptr);
     this->g_board = std::vector<uint8_t>(G_BOARD_SIZE * G_BOARD_SIZE);
+    this->g_next_iteration = std::vector<uint8_t>(G_BOARD_SIZE * G_BOARD_SIZE);
     this->g_state = G_RUNNING;
     this->g_brush = 0;
     this->g_paused = false;
@@ -207,9 +208,6 @@ Game::clear_board(void)
 void
 Game::next_iteration(void)
 {
-    std::vector<uint8_t> next_iteration =
-        std::vector<uint8_t>(G_BOARD_SIZE * G_BOARD_SIZE);
-
     for (int y = 0; y < G_BOARD_SIZE; y++) {
 
         for (int x = 0; x < G_BOARD_SIZE; x++) {
@@ -217,20 +215,20 @@ Game::next_iteration(void)
             int neighbour_count = this->calculate_neighbour_count(x, y);
             uint8_t current_cell = this->get_cell(x, y);
 
-            next_iteration[x + y * G_BOARD_SIZE] = current_cell;
+            this->g_next_iteration[x + y * G_BOARD_SIZE] = current_cell;
             if (current_cell) {
 
                 if (neighbour_count < 2 || neighbour_count > 3)
-                    next_iteration[x + y * G_BOARD_SIZE] = 0;
+                    this->g_next_iteration[x + y * G_BOARD_SIZE] = 0;
             } else {
 
                 if (neighbour_count == 3)
-                    next_iteration[x + y * G_BOARD_SIZE] = 1;
+                    this->g_next_iteration[x + y * G_BOARD_SIZE] = 1;
             }
         }
     }
 
-    std::swap(this->g_board, next_iteration);
+    std::swap(this->g_board, this->g_next_iteration);
 }
 
 void
