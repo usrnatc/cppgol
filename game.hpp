@@ -32,6 +32,7 @@ class Game
         std::shared_ptr<Renderer> g_renderer;
         std::vector<uint8_t> g_board;
         std::vector<uint8_t> g_next_iteration;
+        std::vector<std::pair<int,int>> g_alive_cells;
         int g_brush;
         bool g_paused;
 
@@ -79,6 +80,9 @@ class Game
         void next_iteration(void);
         void clear_board(void);
         void next_brush(int);
+
+        void remember_cell(int, int);
+        void forget_cell(int, int);
 
         void place_cell(int, int, int);
         void place_block(int, int, int);

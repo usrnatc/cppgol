@@ -7,8 +7,9 @@
  *  year: 2022
  */
 
-#include <stdio.h>
+#include <cstdio>
 #include <cstdint>
+#include <algorithm>
 
 #if defined(__gnu_linux__) || defined(__linux__)
     #include <SDL2/SDL.h>
@@ -63,7 +64,7 @@ Game::init(int unsigned window_width, int unsigned window_height)
     }
 
     this->g_renderer->init(this->g_window, -1,
-            SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!this->g_renderer->self()) {
 
         fprintf(stderr, "[ERROR] :: %s :: g_renderer\n", __func__);
@@ -103,6 +104,11 @@ Game::set_cell(int x, int y, uint8_t val)
     if (this->g_board[b_x + b_y * G_BOARD_SIZE] != val) {
         this->g_board[b_x + b_y * G_BOARD_SIZE] = val;
     }
+
+    if (val)
+        this->remember_cell(x, y);
+    else
+        this->forget_cell(x, y);
 }
 
 uint8_t
@@ -151,9 +157,9 @@ Game::handle_mouse(void)
         (this->*(this->g_brush_selections[this->g_brush]))(b_x, b_y);
 
         if (m_btns & SDL_BUTTON_LMASK)
-           (this->*(this->g_brush_placements[this->g_brush]))(b_x, b_y, 1);
+            (this->*(this->g_brush_placements[this->g_brush]))(b_x, b_y, 1);
         else if (m_btns & SDL_BUTTON_RMASK)
-           (this->*(this->g_brush_placements[this->g_brush]))(b_x, b_y, 0);
+            (this->*(this->g_brush_placements[this->g_brush]))(b_x, b_y, 0);
     }
 }
 
@@ -202,6 +208,7 @@ Game::clear_board(void)
 
         *iter = 0;
     }
+    this->g_alive_cells.clear();
 }
 
 void
@@ -217,14 +224,18 @@ Game::next_iteration(void)
             this->g_next_iteration[x + y * G_BOARD_SIZE] = current_cell;
             // at any given point in the simulation, there will be more
             // dead cells than alive on the board
-            if (current_cell) [[ unlikely ]] {
+            if (current_cell) [[unlikely]] {
 
-                if (neighbour_count < 2 || neighbour_count > 3)
+                if (neighbour_count < 2 || neighbour_count > 3) {
                     this->g_next_iteration[x + y * G_BOARD_SIZE] = 0;
-            } else [[ likely ]] {
+                    this->forget_cell(x, y);
+                }
+            } else [[likely]] {
 
-                if (neighbour_count == 3)
+                if (neighbour_count == 3) {
                     this->g_next_iteration[x + y * G_BOARD_SIZE] = 1;
+                    this->remember_cell(x, y);
+                }
             }
         }
     }
@@ -235,31 +246,26 @@ Game::next_iteration(void)
 void
 Game::display_board(void)
 {
-    for (int y = 0; y < G_BOARD_SIZE; y++) {
+    for (auto& [x, y] : this->g_alive_cells) {
 
-        for (int x = 0; x < G_BOARD_SIZE; x++) {
-
-            if (this->get_cell(x, y))
-                this->renderer()->draw_filled_box(x * 10, y * 10,
-                        255, 255, 255, 255);
-        }
+        this->renderer()->draw_filled_box(x * 10, y * 10, 255, 255, 255, 255);
     }
 }
 
 void
 Game::loop(void)
 {
-    SDL_Event event;
-    int unsigned previous_tick = 0;
-    int unsigned current_tick;
-    int frame_delim = 5;
-    int err;
+    SDL_Event       event;
+    int unsigned    previous_tick = 0;
+    int unsigned    current_tick;
+    int             frame_delim = 5;
+    int             err;
 
     while (this->g_state == G_RUNNING) {
 
         if (err = SDL_ShowCursor(SDL_DISABLE), err < 0)
             this->g_state = G_STOPPED;
-        
+
         current_tick = SDL_GetTicks();
         this->g_renderer->clear();
         this->handle_keyboard(&event, &frame_delim);
@@ -267,7 +273,7 @@ Game::loop(void)
         if (!this->g_paused) {
 
             if ((current_tick - previous_tick) > 1000 / frame_delim) {
-            
+
                 this->next_iteration();
                 previous_tick = current_tick;
             }
@@ -281,12 +287,33 @@ Game::loop(void)
 void
 Game::next_brush(int delta)
 {
-    int size = this->g_brush_selections.size();
+    int size = static_cast<int>(this->g_brush_selections.size());
     this->g_brush += delta;
     if (this->g_brush >= size)
         this->g_brush = 0;
     if (this->g_brush < 0)
         this->g_brush = size - 1;
+}
+
+void
+Game::remember_cell(int x, int y)
+{
+    std::pair<int, int> cell_memory = {x, y};
+    for (const auto &[x_alive, y_alive]: this->g_alive_cells) {
+
+        if (x == x_alive && y == y_alive)
+            return;
+    }
+    this->g_alive_cells.emplace_back(cell_memory);
+}
+
+void
+Game::forget_cell(int x, int y)
+{
+    std::pair<int, int> cell_memory = {x, y};
+    this->g_alive_cells.erase(std::remove(this->g_alive_cells.begin(),
+                this->g_alive_cells.end(), cell_memory),
+            this->g_alive_cells.end());
 }
 
 void
