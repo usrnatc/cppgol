@@ -58,7 +58,7 @@ Game::init(int unsigned window_width, int unsigned window_height)
             window_height, SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI);
     if (!this->g_window->self()) {
 
-        fprintf(stderr, "[ERROR :: %s :: g_window\n", __func__);
+        fprintf(stderr, "[ERROR] :: %s :: g_window\n", __func__);
         rc = EXIT_FAILURE;
         goto out;
     }
@@ -106,9 +106,9 @@ Game::set_cell(int x, int y, uint8_t val)
     }
 
     if (val)
-        this->remember_cell(x, y);
+        this->remember_cell(b_x, b_y);
     else
-        this->forget_cell(x, y);
+        this->forget_cell(b_x, b_y);
 }
 
 uint8_t
@@ -222,8 +222,8 @@ Game::next_iteration(void)
             uint8_t current_cell = this->get_cell(x, y);
 
             this->g_next_iteration[x + y * G_BOARD_SIZE] = current_cell;
-            // at any given point in the simulation, there will be more
-            // dead cells than alive on the board
+            // at any given point in the simulation, it is more likely that 
+            // there will be more dead cells than alive cells on the board
             if (current_cell) [[unlikely]] {
 
                 if (neighbour_count < 2 || neighbour_count > 3) {
@@ -298,12 +298,12 @@ Game::next_brush(int delta)
 void
 Game::remember_cell(int x, int y)
 {
-    std::pair<int, int> cell_memory = {x, y};
-    for (const auto &[x_alive, y_alive]: this->g_alive_cells) {
+    for (const auto& [x_alive, y_alive]: this->g_alive_cells) {
 
         if (x == x_alive && y == y_alive)
             return;
     }
+    std::pair<int, int> cell_memory = {x, y};
     this->g_alive_cells.emplace_back(cell_memory);
 }
 
