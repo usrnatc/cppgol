@@ -23,7 +23,7 @@
 #include "game.hpp"
 
 int
-main(int argv, char **args)
+main([[maybe_unused]] int argv, [[maybe_unused]] char **args)
 {
     std::unique_ptr<Game> game = std::make_unique<Game>();
     int rc = EXIT_SUCCESS;

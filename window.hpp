@@ -1,6 +1,6 @@
 /**
  * WINDOW:
- *  This file contains all necessary prototype and utilites needed for
+ *  This file contains all necessary prototype and utilities needed for
  *  an SDL window
  *
  *  file: window.hpp

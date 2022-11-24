@@ -215,11 +215,13 @@ Game::next_iteration(void)
             uint8_t current_cell = this->get_cell(x, y);
 
             this->g_next_iteration[x + y * G_BOARD_SIZE] = current_cell;
-            if (current_cell) {
+            // at any given point in the simulation, there will be more
+            // dead cells than alive on the board
+            if (current_cell) [[ unlikely ]] {
 
                 if (neighbour_count < 2 || neighbour_count > 3)
                     this->g_next_iteration[x + y * G_BOARD_SIZE] = 0;
-            } else {
+            } else [[ likely ]] {
 
                 if (neighbour_count == 3)
                     this->g_next_iteration[x + y * G_BOARD_SIZE] = 1;
